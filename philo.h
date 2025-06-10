@@ -6,7 +6,7 @@
 /*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:16:50 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/09 15:41:25 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:04:02 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ typedef struct	s_philo
     int	id;
 	int	t_eat;
 	int	t_sleep;
-	int	t_die;	
+	int	t_die;
+	int	dead;	
+	int	food;
 	
 }	t_philo;
 
