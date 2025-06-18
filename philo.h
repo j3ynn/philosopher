@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:16:50 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/17 15:28:15 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:11:29 by je               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct	s_philo
     int				id;
 	int				time_eat;
 	int				time_sleep;
-	int				time_die;	
+	int				time_die;
 	int				num_eaten;
 	bool			dead;
 	pthread_t		thread;
@@ -51,8 +51,12 @@ typedef struct	s_data
 
 uint64_t	convert_time(void);
 
-void		print_status(t_data *data, char *str, int id);
+int			ft_isdigit(int i);
+int			ft_atoi(const char *str);
+int			check_error(t_data *data);
 
-int			ft_isdigit(int p);
+void		print_status(t_data *data, char *str, int id);
+void		alloc_memory(t_data *data);
+void		free_memory(t_data *data);
 
 #endif
