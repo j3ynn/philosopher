@@ -44,3 +44,13 @@ void	timer_to_die(void *p)
 	}
 	return (NULL);
 }
+
+/*int	ft_usleep(uint16_t time)
+{
+	uint16_t	start;
+
+	start = convert_time();
+	while ((convert_time() - start) < time)
+		usleep(time / 10);
+	return (0);
+}*/
