@@ -13,7 +13,7 @@
 typedef struct	s_philo
 {
 	struct s_data	*data;
-    int				id;
+	int				id;
 	int				time_eat;
 	int				time_sleep;
 	int				time_die;
@@ -47,5 +47,6 @@ int			check_error(t_data *data);
 void		print_status(t_data *data, char *str, int id);
 void		alloc_memory(t_data *data);
 void		free_memory(t_data *data);
+void		timer_to_die(void *p);
 
 #endif
