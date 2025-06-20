@@ -38,14 +38,14 @@ void	timer_to_die(void *p)
 			philo->data->finish = 1;
 			pthread_mutex_unlock(&philo->data->print);
 			pthread_mutex_unlock(&philo->data->lock);
-			return (NULL);
+			return ;
 		}
 		usleep(1000);
 	}
-	return (NULL);
+	return ;
 }
 
-/*int	ft_usleep(uint16_t time)
+int	custom_usleep(uint16_t time)
 {
 	uint16_t	start;
 
@@ -53,4 +53,21 @@ void	timer_to_die(void *p)
 	while ((convert_time() - start) < time)
 		usleep(time / 10);
 	return (0);
-}*/
+}
+
+int	one_fork(t_philo *philo)
+{
+	if (philo->data->num_philos == 1)
+	{
+		pthread_mutex_lock(philo->fork_s);
+		print_status(philo->data, "has taken a fork", philo->id);
+		custom_usleep(philo->time_die);
+		pthread_mutex_lock(&philo->data->lock);
+		philo->data->finish = 1;
+		pthread_mutex_unlock(&philo->data->lock);
+		pthread_mutex_unlock(philo->fork_s);
+		return (1);
+	}
+	return (0);
+}
+

@@ -43,10 +43,14 @@ uint64_t	convert_time(void);
 int			ft_isdigit(int i);
 int			ft_atoi(const char *str);
 int			check_error(t_data *data);
+int			custom_usleep(uint16_t time);
+int			one_fork(t_philo *philo);
+int			philo_sleep(t_philo *philo);
 
 void		print_status(t_data *data, char *str, int id);
 void		alloc_memory(t_data *data);
 void		free_memory(t_data *data);
 void		timer_to_die(void *p);
+void		philo_eat(t_philo *philo);
 
 #endif
