@@ -2,21 +2,23 @@ NAME = philo
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -pthread
-DFLAGS = -g -fsanitize=thread
+DEBUG_FLAGS = -g -fsanitize=thread
+OPTIMIZE_FLAGS = -O2
 
 SRCDIR = .
 OBJDIR = obj
 
-SRCS = action.c \
-       memory.c \
-       utils.c \
-       utils_base.c
+SRCS = 	action.c \
+		init.c \
+		memory.c \
+		utils.c \
+		utils_base.c \
+		main.c
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
 HEADER = philo.h
 
-# Colori per output
 GREEN = \033[0;32m
 RED = \033[0;31m
 BLUE = \033[0;34m

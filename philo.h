@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 11:00:18 by jbellucc          #+#    #+#             */
+/*   Updated: 2025/06/23 15:27:42 by jbellucc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -18,6 +30,7 @@ typedef struct	s_philo
 	int				time_sleep;
 	int				time_die;
 	int				num_eaten;
+	int				eating;
 	bool			dead;
 	pthread_t		thread;
 	uint64_t		time_to_die;
@@ -29,8 +42,8 @@ typedef struct	s_philo
 typedef struct	s_data
 {
 	int				num_philos;
-	int				num_eat;
 	int				finish;
+	int				num_eat;
 	t_philo			*philo;
 	uint64_t		start_time;
 	pthread_mutex_t	*forks;
@@ -52,5 +65,9 @@ void		alloc_memory(t_data *data);
 void		free_memory(t_data *data);
 void		timer_to_die(void *p);
 void		philo_eat(t_philo *philo);
+void		*philo_routine(void *arg);
+void		init_philo(t_data *data);
+void		init_forks(t_data *data);
+void		init_threads(t_data *data);
 
 #endif
