@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:00:07 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/23 15:28:01 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:49:04 by je               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,20 @@ void	philo_eat(t_philo *philo) //da aggiungere Alternanza dell’ordine di presa
 {
 	if (one_fork(philo))
 		return ;
-	pthread_mutex_lock(philo->fork_s);
-	print_status(philo->data, "has taken a fork", philo->id);
-	pthread_mutex_lock(philo->fork_d);
-	print_status(philo->data, "has taken a fork", philo->id);
+if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->fork_s);
+		print_status(philo->data, "has taken a fork", philo->id);
+		pthread_mutex_lock(philo->fork_d);
+		print_status(philo->data, "has taken a fork", philo->id);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->fork_d);
+		print_status(philo->data, "has taken a fork", philo->id);
+		pthread_mutex_lock(philo->fork_s);
+		print_status(philo->data, "has taken a fork", philo->id);
+	}
 	pthread_mutex_lock(&philo->lock);
 	philo->time_to_die = convert_time() + philo->time_die;
 	pthread_mutex_unlock(&philo->lock);
@@ -46,15 +56,35 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		custom_usleep(philo->time_eat / 2);
-	while (philo->data->finish == 0)
+	while (1)
 	{
+		pthread_mutex_lock(&philo->data->lock);
+		if (philo->data->finish == 1)
+		{
+			pthread_mutex_unlock(&philo->data->lock);
+			break;
+		}
+		pthread_mutex_unlock(&philo->data->lock);
 		philo_eat(philo);
-		if (philo->data->finish == 1)
+		if (philo->data->num_eat > 0 && philo->num_eaten >= philo->data->num_eat)
+		{
+			pthread_mutex_lock(&philo->data->lock);
+			philo->data->finish = 1;
+			pthread_mutex_unlock(&philo->data->lock);
 			break;
+		}
 		philo_sleep(philo);
-		if (philo->data->finish == 1)
-			break;
 		print_status(philo->data, "is thinking", philo->id);
 	}
 	return (NULL);
+}
+
+void	philo_sated(t_philo *philo)
+{
+	if (philo->num_eaten >= philo->data->num_eat && philo->data->num_eat > 0)
+	{
+		pthread_mutex_lock(&philo->lock);
+		philo->data->finish = 1;
+		pthread_mutex_unlock(&philo->lock);
+	}
 }

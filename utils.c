@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:00:26 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/23 11:00:27 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/06/29 12:13:50 by je               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ uint64_t	convert_time(void)
 	seconds = tv.tv_sec * 1000;
 	microseconds = tv.tv_usec / 1000;
 	return (seconds + microseconds);
-}
-
-void	print_status(t_data *data, char *str, int id)
-{
-	pthread_mutex_lock(&data->print);
-	if (data->finish == 1)
-		return ;
-	printf("%lu %d %s\n", (convert_time() - data->start_time), id, str);
-	pthread_mutex_unlock(&data->print);
 }
 
 void	timer_to_die(void *p)
@@ -83,3 +74,18 @@ int	one_fork(t_philo *philo)
 	return (0);
 }
 
+int	check_dead(t_data *data, int i)
+{
+	if (data->philo[i].dead == 1)
+	{
+		pthread_mutex_lock(&data->lock);
+		data->finish = 1;
+		pthread_mutex_unlock(&data->lock);
+		print_status(data, "is dead", data->philo[i].id);
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:00:18 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/23 15:27:42 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:24:16 by je               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ typedef struct	s_data
 	int				num_philos;
 	int				finish;
 	int				num_eat;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
 	t_philo			*philo;
 	uint64_t		start_time;
 	pthread_mutex_t	*forks;
@@ -59,6 +62,7 @@ int			check_error(t_data *data);
 int			custom_usleep(uint16_t time);
 int			one_fork(t_philo *philo);
 int			philo_sleep(t_philo *philo);
+int			check_dead(t_data *data, int i);
 
 void		print_status(t_data *data, char *str, int id);
 void		alloc_memory(t_data *data);
@@ -69,5 +73,9 @@ void		*philo_routine(void *arg);
 void		init_philo(t_data *data);
 void		init_forks(t_data *data);
 void		init_threads(t_data *data);
+void		init(t_data *data, int ac, char **av);
+void		philo_sated(t_philo *philo);
+
+void	*monitor_death(void *arg);
 
 #endif
