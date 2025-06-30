@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:09:07 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/29 14:28:23 by je               ###   ########.fr       */
+/*   Updated: 2025/06/30 15:57:44 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ void	init_philo(t_data *data)
 		data->philo[i].data = data;
 		data->philo[i].id = i + 1;
 		data->philo[i].num_eaten = 0;
-		data->philo[i].eating = 0;
+		data->philo[i].is_eating = 0;
 		data->philo[i].dead = false;
-		data->philo[i].time_die = data->time_die;
-		data->philo[i].time_eat = data->time_eat;
-		data->philo[i].time_sleep = data->time_sleep;
-		data->philo[i].time_to_die = data->start_time + data->time_die;
-		pthread_mutex_init(&data->philo[i].lock, NULL);
+		//data->philo[i].time_to_die = data->start_time + data->time_die;
+		data->philo[i].last_meal = data->start_time;
+		//pthread_mutex_init(&data->philo[i].lock, NULL);
 		i++;
 	}
 }
@@ -38,12 +36,12 @@ void	init_forks(t_data *data)
 	int i;
 
 	i = 0;
-	if (data->num_philos == 1)
+	/*if (data->num_philos == 1)
 	{
 		data->philo[0].fork_s = &data->forks[0];
 		data->philo[0].fork_d = NULL;
 		return;
-	}
+	}*/
 	while (i < data->num_philos)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
@@ -66,21 +64,23 @@ void	init_threads(t_data *data)
 	int			i;
 	pthread_t	monitor;
 
-	pthread_mutex_init(&data->lock, NULL);
-	pthread_mutex_init(&data->print, NULL);
 	i = 0;
+	
+	pthread_create(&monitor, NULL, &monitor_death, data);
 	while (i < data->num_philos)
 	{
 		pthread_create(&data->philo[i].thread, NULL, &philo_routine, &data->philo[i]);
 		i++;
 	}
-	pthread_create(&monitor, NULL, &monitor_death, data);
+	//pthread_create(&monitor, NULL, &monitor_death, data);
 	i = 0;
+	pthread_join(monitor, NULL);
 	while (i < data->num_philos)
 	{
 		pthread_join(data->philo[i].thread, NULL);
 		i++;
 	}
+	//pthread_join(monitor, NULL);
 }
 
 void	init(t_data *data, int ac, char **av)

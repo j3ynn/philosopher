@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_base.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:00:23 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/29 14:19:16 by je               ###   ########.fr       */
+/*   Updated: 2025/06/30 14:37:48 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	check_error(t_data *data)
 void	print_status(t_data *data, char *str, int id)
 {
 	pthread_mutex_lock(&data->print);
-	pthread_mutex_lock(&data->lock);
+	//pthread_mutex_lock(&data->lock);
 	if (data->finish == 0)
 		printf("%lu %d %s\n", (convert_time() - data->start_time), id, str);
-	pthread_mutex_unlock(&data->lock);
+	//pthread_mutex_unlock(&data->lock);
 	pthread_mutex_unlock(&data->print);
 }

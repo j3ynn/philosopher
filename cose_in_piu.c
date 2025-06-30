@@ -12,15 +12,12 @@ void	*monitor_death(void *arg)
 		while (i < data->num_philos)
 		{
 			pthread_mutex_lock(&data->philo[i].lock);
-			if (convert_time() > data->philo[i].time_to_die)
+			if ((convert_time() - data->philo[i].last_meal ) >= data->time_die && !data->philo[i].is_eating)
 			{
 				pthread_mutex_unlock(&data->philo[i].lock);
 				pthread_mutex_lock(&data->lock);
-				if (data->finish == 0)
-				{
-					data->finish = 1;
-					print_status(data, "died", data->philo[i].id);
-				}
+				print_status(data, "died", data->philo[i].id);
+				data->finish = 1;
 				pthread_mutex_unlock(&data->lock);
 				return (NULL);
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:00:26 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/29 12:13:50 by je               ###   ########.fr       */
+/*   Updated: 2025/06/30 15:58:49 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	timer_to_die(void *p)
 	philo = (t_philo *)p;
 	while (philo->data->finish == 0)
 	{
-		if ((convert_time() - philo->time_to_die) >= (uint64_t)philo->time_die)
+		if ((convert_time() - philo->last_meal) >= (uint64_t)philo->data->time_die)
 		{
 			pthread_mutex_lock(&philo->data->lock);
 			pthread_mutex_lock(&philo->data->print);
-			print_status(philo->data, "is dead", philo->id);
+			print_status(philo->data, "is died", philo->id);
 			philo->data->finish = 1;
 			pthread_mutex_unlock(&philo->data->print);
 			pthread_mutex_unlock(&philo->data->lock);
@@ -62,26 +62,25 @@ int	one_fork(t_philo *philo)
 {
 	if (philo->data->num_philos == 1)
 	{
-		pthread_mutex_lock(philo->fork_s);
-		print_status(philo->data, "has taken a fork", philo->id);
-		custom_usleep(philo->time_die);
+		custom_usleep(philo->data->time_die);
+		pthread_mutex_unlock(philo->fork_d);
+		print_status(philo->data, "is died", philo->id);
 		pthread_mutex_lock(&philo->data->lock);
 		philo->data->finish = 1;
 		pthread_mutex_unlock(&philo->data->lock);
-		pthread_mutex_unlock(philo->fork_s);
-		return (1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 int	check_dead(t_data *data, int i)
 {
-	if (data->philo[i].dead == 1)
+	if (data->philo[i].dead == true)
 	{
 		pthread_mutex_lock(&data->lock);
 		data->finish = 1;
 		pthread_mutex_unlock(&data->lock);
-		print_status(data, "is dead", data->philo[i].id);
+		print_status(data, "is died", data->philo[i].id);
 		return (1);
 	}
 	else
