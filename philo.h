@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:00:18 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/30 16:02:30 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:37:51 by je               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct	s_philo
 {
 	struct s_data	*data;
 	int				id;
+	bool			is_full;
 	int				num_eaten;
 	int				is_eating;
 	bool			dead;
@@ -57,7 +58,7 @@ uint64_t	convert_time(void);
 int			ft_isdigit(int i);
 int			ft_atoi(const char *str);
 int			check_error(t_data *data);
-int			custom_usleep(uint16_t time);
+int			custom_usleep(uint64_t time);
 int			one_fork(t_philo *philo);
 int			philo_sleep(t_philo *philo);
 int			check_dead(t_data *data, int i);
@@ -65,7 +66,7 @@ int			check_dead(t_data *data, int i);
 void		print_status(t_data *data, char *str, int id);
 void		alloc_memory(t_data *data);
 void		free_memory(t_data *data);
-void		timer_to_die(void *p);
+void		*timer_to_die(void *p);
 void		philo_eat(t_philo *philo);
 void		*philo_routine(void *arg);
 void		init_philo(t_data *data);

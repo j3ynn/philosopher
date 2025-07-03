@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:09:07 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/30 15:57:44 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:38:18 by je               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ void	init_philo(t_data *data)
 		data->philo[i].num_eaten = 0;
 		data->philo[i].is_eating = 0;
 		data->philo[i].dead = false;
+		data->philo[i].is_full = false;
 		//data->philo[i].time_to_die = data->start_time + data->time_die;
-		data->philo[i].last_meal = data->start_time;
-		//pthread_mutex_init(&data->philo[i].lock, NULL);
+		data->philo[i].last_meal = convert_time() + data->time_die;
+		pthread_mutex_init(&data->philo[i].lock, NULL);
 		i++;
 	}
 }
@@ -65,7 +66,7 @@ void	init_threads(t_data *data)
 	pthread_t	monitor;
 
 	i = 0;
-	
+
 	pthread_create(&monitor, NULL, &monitor_death, data);
 	while (i < data->num_philos)
 	{

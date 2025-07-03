@@ -6,32 +6,23 @@ void	*monitor_death(void *arg)
 	int		i;
 
 	data = (t_data *)arg;
-	while (1)
+	while (data->finish == 0 && data->num_eat > 0)
 	{
 		i = 0;
 		while (i < data->num_philos)
 		{
-			pthread_mutex_lock(&data->philo[i].lock);
-			if ((convert_time() - data->philo[i].last_meal ) >= data->time_die && !data->philo[i].is_eating)
-			{
-				pthread_mutex_unlock(&data->philo[i].lock);
-				pthread_mutex_lock(&data->lock);
-				print_status(data, "died", data->philo[i].id);
-				data->finish = 1;
-				pthread_mutex_unlock(&data->lock);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&data->philo[i].lock);
+			if (!data->philo[i].is_full)
+				break ;
 			i++;
 		}
-		pthread_mutex_lock(&data->lock);
-		if (data->finish == 1)
+		if (i >= data->num_philos)
 		{
+			pthread_mutex_lock(&data->lock);
+			data->finish = 1;
+			printf("all full\n");
 			pthread_mutex_unlock(&data->lock);
-			break;
+			return (NULL);
 		}
-		pthread_mutex_unlock(&data->lock);
-		usleep(1000);
 	}
 	return (NULL);
 }

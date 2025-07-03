@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:00:26 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/06/30 15:58:49 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:50:48 by je               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,28 @@ uint64_t	convert_time(void)
 	return (seconds + microseconds);
 }
 
-void	timer_to_die(void *p)
+void	*timer_to_die(void *p)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)p;
 	while (philo->data->finish == 0)
 	{
-		if ((convert_time() - philo->last_meal) >= (uint64_t)philo->data->time_die)
+		if (convert_time() >= (uint64_t)philo->last_meal && !philo->is_eating)
 		{
 			pthread_mutex_lock(&philo->data->lock);
-			pthread_mutex_lock(&philo->data->print);
 			print_status(philo->data, "is died", philo->id);
 			philo->data->finish = 1;
-			pthread_mutex_unlock(&philo->data->print);
 			pthread_mutex_unlock(&philo->data->lock);
-			return ;
+			return (NULL);
 		}
-		usleep(1000);
 	}
-	return ;
+	return (NULL);
 }
 
-int	custom_usleep(uint16_t time)
+int	custom_usleep(uint64_t time)
 {
-	uint16_t	start;
+	uint64_t	start;
 
 	start = convert_time();
 	while ((convert_time() - start) < time)
