@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 11:00:07 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/03 16:44:44 by je               ###   ########.fr       */
+/*   Created: 2025/07/07 14:48:38 by jbellucc          #+#    #+#             */
+/*   Updated: 2025/07/07 15:08:40 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,20 @@
 void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_d);
-	print_status(philo->data, "has taken a destra fork", philo->id);
+	print_status(philo->data, "has taken a fork", philo->id);
 	if (one_fork(philo) == 0)
 		return ;
 	pthread_mutex_lock(philo->fork_s);
-	print_status(philo->data, "has taken a sinistra fork", philo->id);
+	print_status(philo->data, "has taken a fork", philo->id);
 	pthread_mutex_lock(&philo->lock);
 	philo->is_eating = 1;
+	philo->last_meal = convert_time();
 	pthread_mutex_unlock(&philo->lock);
 	print_status(philo->data, "is eating", philo->id);
 	custom_usleep(philo->data->time_eat);
 	pthread_mutex_lock(&philo->lock);
 	philo->is_eating = 0;
 	philo->num_eaten++;
-	philo->last_meal = convert_time() + (uint64_t)philo->data->time_die;
 	pthread_mutex_unlock(&philo->lock);
 	pthread_mutex_unlock(philo->fork_d);
 	pthread_mutex_unlock(philo->fork_s);
@@ -43,7 +43,7 @@ int	philo_sleep(t_philo *philo)
 
 void	*philo_routine(void *arg)
 {
-	t_philo	*philo;
+	t_philo		*philo;
 	pthread_t	jenny;
 
 	philo = (t_philo *)arg;
@@ -57,7 +57,7 @@ void	*philo_routine(void *arg)
 		if (philo->data->finish == 1)
 		{
 			pthread_mutex_unlock(&philo->data->lock);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(&philo->data->lock);
 		philo_eat(philo);

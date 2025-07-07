@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 11:09:07 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/04 16:42:20 by je               ###   ########.fr       */
+/*   Created: 2025/07/07 14:51:29 by jbellucc          #+#    #+#             */
+/*   Updated: 2025/07/07 14:52:41 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	init_philo(t_data *data)
 		data->philo[i].is_eating = 0;
 		data->philo[i].dead = false;
 		data->philo[i].is_full = false;
-		//data->philo[i].time_to_die = data->start_time + data->time_die;
-		data->philo[i].last_meal = convert_time() + data->time_die;
+		data->philo[i].last_meal = convert_time();
 		pthread_mutex_init(&data->philo[i].lock, NULL);
 		i++;
 	}
@@ -34,15 +33,9 @@ void	init_philo(t_data *data)
 
 void	init_forks(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	/*if (data->num_philos == 1)
-	{
-		data->philo[0].fork_s = &data->forks[0];
-		data->philo[0].fork_d = NULL;
-		return;
-	}*/
 	while (i < data->num_philos)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
@@ -66,14 +59,13 @@ void	init_threads(t_data *data)
 	pthread_t	monitor;
 
 	i = 0;
-
 	pthread_create(&monitor, NULL, &monitor_death, data);
 	while (i < data->num_philos)
 	{
-		pthread_create(&data->philo[i].thread, NULL, &philo_routine, &data->philo[i]);
+		pthread_create(&data->philo[i].thread, NULL,
+			&philo_routine, &data->philo[i]);
 		i++;
 	}
-	//pthread_create(&monitor, NULL, &monitor_death, data);
 	i = 0;
 	pthread_join(monitor, NULL);
 	while (i < data->num_philos)
@@ -81,7 +73,6 @@ void	init_threads(t_data *data)
 		pthread_join(data->philo[i].thread, NULL);
 		i++;
 	}
-	//pthread_join(monitor, NULL);
 }
 
 void	init(t_data *data, int ac, char **av)

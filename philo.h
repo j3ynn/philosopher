@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 11:00:18 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/03 16:37:51 by je               ###   ########.fr       */
+/*   Created: 2025/07/07 14:53:35 by jbellucc          #+#    #+#             */
+/*   Updated: 2025/07/07 15:08:15 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -22,7 +21,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	struct s_data	*data;
 	int				id;
@@ -31,21 +30,20 @@ typedef struct	s_philo
 	int				is_eating;
 	bool			dead;
 	pthread_t		thread;
-	//uint64_t		time_to_die;
-	long				last_meal;
+	uint64_t		last_meal;
 	pthread_mutex_t	*fork_s;
 	pthread_mutex_t	*fork_d;
 	pthread_mutex_t	lock;
 }	t_philo;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	int				num_philos;
 	int				finish;
 	int				num_eat;
 	int				time_eat;
 	int				time_sleep;
-	long				time_die;
+	long			time_die;
 	t_philo			*philo;
 	uint64_t		start_time;
 	pthread_mutex_t	*forks;
@@ -61,7 +59,6 @@ int			check_error(t_data *data);
 int			custom_usleep(uint64_t time);
 int			one_fork(t_philo *philo);
 int			philo_sleep(t_philo *philo);
-int			check_dead(t_data *data, int i);
 
 void		print_status(t_data *data, char *str, int id);
 void		alloc_memory(t_data *data);
@@ -74,7 +71,6 @@ void		init_forks(t_data *data);
 void		init_threads(t_data *data);
 void		init(t_data *data, int ac, char **av);
 void		philo_sated(t_philo *philo);
-
-void	*monitor_death(void *arg);
+void		*monitor_death(void *arg);
 
 #endif

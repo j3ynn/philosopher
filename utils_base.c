@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   utils_base.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: je <je@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 11:00:23 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/03 16:51:51 by je               ###   ########.fr       */
+/*   Created: 2025/07/07 14:54:49 by jbellucc          #+#    #+#             */
+/*   Updated: 2025/07/07 14:55:45 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "philo.h"
 
@@ -23,12 +22,11 @@ int	ft_isdigit(int i)
 
 int	ft_atoi(const char *str)
 {
-	int p;
-	int ris;
+	int	p;
+	int	ris;
 
 	p = 0;
 	ris = 0;
-
 	while ((str[p] == ' ') || (str[p] >= 9 && str[p] <= 13))
 		p++;
 	if (str[p] == '-')
@@ -52,7 +50,7 @@ int	check_error(t_data *data)
 	if (data->num_philos < 0 || data->num_eat < 0)
 	{
 		write(2, "Error\n", 6);
-			return (1);
+		return (1);
 	}
 	return (0);
 }
