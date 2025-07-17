@@ -6,7 +6,7 @@
 /*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:54:49 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/07 14:55:45 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:02:54 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	check_error(t_data *data)
 
 void	print_status(t_data *data, char *str, int id)
 {
-	pthread_mutex_lock(&data->print);
+	pthread_mutex_lock(&data->lock);
 	if (data->finish == 0)
 		printf("%lu %d %s\n", (convert_time() - data->start_time), id, str);
-	pthread_mutex_unlock(&data->print);
+	pthread_mutex_unlock(&data->lock);
 }

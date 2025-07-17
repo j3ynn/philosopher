@@ -6,7 +6,7 @@
 /*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:53:35 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/07 15:08:15 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/17 16:56:30 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ void		init_forks(t_data *data);
 void		init_threads(t_data *data);
 void		init(t_data *data, int ac, char **av);
 void		philo_sated(t_philo *philo);
-void		*monitor_death(void *arg);
+void		*monitor_meals(void *arg);
 
 #endif

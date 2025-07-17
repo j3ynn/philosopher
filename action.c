@@ -6,7 +6,7 @@
 /*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:48:38 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/07 15:08:40 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:39:19 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	philo_eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->fork_d);
+	pthread_mutex_lock(philo->fork_s);
 	print_status(philo->data, "has taken a fork", philo->id);
 	if (one_fork(philo) == 0)
 		return ;
-	pthread_mutex_lock(philo->fork_s);
+	pthread_mutex_lock(philo->fork_d);
 	print_status(philo->data, "has taken a fork", philo->id);
 	pthread_mutex_lock(&philo->lock);
 	philo->is_eating = 1;

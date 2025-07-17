@@ -6,7 +6,7 @@
 /*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:51:29 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/07 14:52:41 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/17 16:57:06 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	init_forks(t_data *data)
 	{
 		data->philo[i].fork_s = &data->forks[i];
 		if (i == data->num_philos - 1)
-			data->philo[i].fork_d = &data->forks[0];
+		{
+			data->philo[i].fork_s = &data->forks[0];
+			data->philo[i].fork_d = &data->forks[i];
+		}
 		else
 			data->philo[i].fork_d = &data->forks[i + 1];
 		i++;
@@ -59,7 +62,7 @@ void	init_threads(t_data *data)
 	pthread_t	monitor;
 
 	i = 0;
-	pthread_create(&monitor, NULL, &monitor_death, data);
+	pthread_create(&monitor, NULL, &monitor_meals, data);
 	while (i < data->num_philos)
 	{
 		pthread_create(&data->philo[i].thread, NULL,
