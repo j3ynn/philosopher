@@ -6,7 +6,7 @@
 /*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:50:43 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/17 17:17:58 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:16:41 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*monitor_meals(void *arg)
 	return (NULL);
 }
 
-static int	continue_timer_to_die_two(t_philo *philo)
+/* static int	continue_timer_to_die_two(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->lock);
 	if (philo->data->finish == 0)
@@ -65,29 +65,31 @@ static int	continue_timer_to_die_two(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->data->lock);
 	return (1);
-}
+} */
 
 static int	continue_timer_to_die(t_philo *philo)
 {
-	uint64_t	meal;
 	uint64_t	last_meal_time;
+	uint64_t	meal;
 	int			is_eating;
 
 	pthread_mutex_lock(&philo->lock);
 	last_meal_time = philo->last_meal;
 	is_eating = philo->is_eating;
 	pthread_mutex_unlock(&philo->lock);
+
 	meal = convert_time() - last_meal_time;
-	if (meal >= (uint64_t)philo->data->time_die)
+	
+	if (meal >= (uint64_t)philo->data->time_die && !is_eating)
 	{
-		pthread_mutex_lock(&philo->lock);
-		if (is_eating)
+		pthread_mutex_lock(&philo->data->lock);
+		if (philo->data->finish == 0)
 		{
-			return (0);
-			pthread_mutex_unlock(&philo->lock);
+			printf("%lu %d died\n", (convert_time() - philo->data->start_time), philo->id);
+			philo->data->finish = 1;
 		}
-		pthread_mutex_unlock(&philo->lock);
-		return (continue_timer_to_die_two(philo));
+		pthread_mutex_unlock(&philo->data->lock);
+		return (1);
 	}
 	return (0);
 }
