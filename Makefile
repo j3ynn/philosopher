@@ -25,21 +25,21 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	@echo "$(GREEN)Linking $(NAME)...$(RESET)"
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) compiled successfully!$(RESET)"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(OBJDIR)
 	@echo "$(GREEN)Compiling $<...$(RESET)"
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
-	rm -rf $(OBJDIR)
+	@rm -rf $(OBJDIR)
 
 fclean: clean
 	@echo "$(RED)Cleaning $(NAME)...$(RESET)"
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

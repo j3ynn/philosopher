@@ -6,7 +6,7 @@
 /*   By: jbellucc <jbellucc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:54:49 by jbellucc          #+#    #+#             */
-/*   Updated: 2025/07/17 17:02:54 by jbellucc         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:00:52 by jbellucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	ft_atoi(const char *str)
 
 int	check_error(t_data *data)
 {
-	if (data->num_philos < 0 || data->num_eat < 0)
+	if (data->num_philos <= 0 || data->time_die < 0 || 
+		data->time_eat < 0 || data->time_sleep < 0 || data->num_eat < 0)
 	{
 		write(2, "Error\n", 6);
 		return (1);
