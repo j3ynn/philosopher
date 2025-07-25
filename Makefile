@@ -12,7 +12,7 @@ SOURCES = philo.c \
 		  memory.c \
 		  utils.c \
 		  utils_base.c \
-		  cose_in_piu.c
+		  monitor.c
 
 OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
 
