@@ -1,0 +1,44 @@
+name: SonarQube
+
+#quando parte la pipeline
+on:
+  push:
+    branches: [main] #a ogni push
+  workflow_dispatch: #a mano 
+
+jobs:
+  sonar:
+    #esegue sul runner del mac
+    runs-on: self-hosted
+    steps:
+      - name: checkout del codice 
+        #pezzo già pronto scritto da github, (fa un git clone del repo sul runner)
+        uses: actions/checkout@v4
+        #opzioni del pezzo scritto da github
+        with:
+          #scarica tutta la storia del repo, così sonar capisce quale codice è nuovo e chio ha scritto ogni riga 
+          fetch-depth: 0 
+
+      #installa build wrapper, un programma che osserva la compilazione(sonar ne ha bisogno per analizzare il C)
+      - name: install build wrapper
+        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v5
+        env:
+          SONARQUBE_HOST: ${{ secret.SONARQUBE_HOST }}
+
+      #compila il progetto con build wrapper
+      - name: build con build wrapper
+        run: build-wrapper-macosx-x86 --out-dir bw-output make
+
+      #lancia lo scanner + invia tutto a sonar
+      - name: analisi sonarqube
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONARQUBE_TOKEN: ${{ secret.SONARQUBE_TOKEN }}
+          SONARQUBE_HOST: ${{ SONARQUBE_HOST }}
+        whith:
+          args: >
+            -Dsonar.projectKey=prova-onboarding
+            -Dsonar.cfamily.compile-commands=bw-output/compile_commands.json
+          # projectKey -> il progetto che hai creato su Sonar
+          # compile-commands -> il file prodotto dal build wrapper al passo 3
+
