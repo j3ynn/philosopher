@@ -77,15 +77,14 @@ static int	continue_timer_to_die(t_philo *philo)
 	last_meal_time = philo->last_meal;
 	is_eating = philo->is_eating;
 	pthread_mutex_unlock(&philo->lock);
-
 	meal = convert_time() - last_meal_time;
-	
 	if (meal >= (uint64_t)philo->data->time_die && !is_eating)
 	{
 		pthread_mutex_lock(&philo->data->lock);
 		if (philo->data->finish == 0)
 		{
-			printf("%lu %d died\n", (convert_time() - philo->data->start_time), philo->id);
+			printf("%llu %d died\n", (convert_time()
+					- philo->data->start_time), philo->id);
 			philo->data->finish = 1;
 		}
 		pthread_mutex_unlock(&philo->data->lock);

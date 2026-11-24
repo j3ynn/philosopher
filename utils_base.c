@@ -47,7 +47,7 @@ int	ft_atoi(const char *str)
 
 int	check_error(t_data *data)
 {
-	if (data->num_philos <= 0 || data->time_die < 0 || 
+	if (data->num_philos <= 0 || data->time_die < 0 ||
 		data->time_eat < 0 || data->time_sleep < 0 || data->num_eat < 0)
 	{
 		write(2, "Error\n", 6);
