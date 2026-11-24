@@ -34,7 +34,7 @@ int	one_fork(t_philo *philo)
 		pthread_mutex_lock(&philo->data->lock);
 		if (philo->data->finish == 0)
 		{
-			printf("%lu %d %s\n", (convert_time() - philo->data->start_time),
+			printf("%llu %d %s\n", (convert_time() - philo->data->start_time),
 				philo->id, "died");
 			philo->data->finish = 1;
 		}
