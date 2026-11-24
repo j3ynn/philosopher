@@ -23,7 +23,7 @@ jobs:
       - name: install build wrapper
         uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v5
         env:
-          SONARQUBE_HOST: ${{ secret.SONARQUBE_HOST }}
+          SONARQUBE_HOST: ${{ secrets.SONARQUBE_HOST }}
 
       #compila il progetto con build wrapper
       - name: build con build wrapper
@@ -33,9 +33,9 @@ jobs:
       - name: analisi sonarqube
         uses: SonarSource/sonarqube-scan-action@v5
         env:
-          SONARQUBE_TOKEN: ${{ secret.SONARQUBE_TOKEN }}
-          SONARQUBE_HOST: ${{ SONARQUBE_HOST }}
-        whith:
+          SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONARQUBE_HOST: ${{ secrets.SONARQUBE_HOST }}
+        with:
           args: >
             -Dsonar.projectKey=prova-onboarding
             -Dsonar.cfamily.compile-commands=bw-output/compile_commands.json
